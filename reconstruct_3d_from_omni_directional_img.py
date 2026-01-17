@@ -1,12 +1,12 @@
 import numpy as np
 from omni_directional_img_utils.e2p import E2P
 
-def camera_param_to_R_t(camera_param):
-    if camera_param.shape != (4, 3):
+def extrinsic_to_R_t(extrinsic):
+    if extrinsic.shape != (4, 3):
         raise ValueError("camera_param must be of shape (4, 3)") 
    
-    R = camera_param[:3, :]
-    t = camera_param[3, :]
+    R = extrinsic[:3, :].T
+    t = extrinsic[3, :]
 
     return R, t
 
@@ -25,12 +25,12 @@ def normalize_vec(vec):
     normalized_vec = vec / norm
     return normalized_vec
 
-def reconstruct_3d_point(camera_params, multi_view_corresponding_points, src_w, src_h):
+def reconstruct_3d_points(extrinsics, corr_points_array, src_w, src_h):
 
     R_list = []
     t_list = [] 
-    for camera_param in camera_params:
-        R, t = camera_param_to_R_t(camera_param)
+    for extrinsic in extrinsics:
+        R, t = extrinsic_to_R_t(extrinsic)
         R_list.append(R)
         t_list.append(t)
     R_array = np.array(R_list) 
@@ -39,8 +39,8 @@ def reconstruct_3d_point(camera_params, multi_view_corresponding_points, src_w, 
     x0_array = np.array([ -R.T @ t for R, t in zip(R_array, t_array)])
 
     xc_list = []
-    for corresponding_points in multi_view_corresponding_points:
-        xc_k = np.array([uv_to_unit_sphere(u, v, src_w, src_h) for u, v in corresponding_points])
+    for corr_points in corr_points_array:
+        xc_k = np.array([uv_to_unit_sphere(u, v, src_w, src_h) for u, v in corr_points ])
         xc_list.append(xc_k)
     xc_array = np.array(xc_list)
 
@@ -64,7 +64,7 @@ def reconstruct_3d_point(camera_params, multi_view_corresponding_points, src_w, 
     P_array = np.array(P_list)
 
     x_list = []
-    num_of_alpha =  multi_view_corresponding_points.shape[1]
+    num_of_alpha = corr_points_array.shape[1]
     for alpha in range(num_of_alpha):
         A = P_array[:, alpha].reshape(-1, 3)
         b = np.array([P_k @ x0_k for P_k, x0_k in zip(P_array[:, alpha], x0_array)]).reshape(-1)
@@ -77,22 +77,22 @@ def reconstruct_3d_point(camera_params, multi_view_corresponding_points, src_w, 
 if __name__ == "__main__":
     camera_params_sample = [ 
         np.array([
-            [1.0, 0.0, 0.0],
-            [0.0, 1.0, 0.0],
-            [0.0, 0.0, 1.0],
-            [1, 1, 1]  # 並進ベクトル
+            [1.0, 1.0, 1.0],
+            [2.0, 2.0, 2.0],
+            [3.0, 3.0, 3.0],
+            [1, 2, 3]  # 並進ベクトル
         ], dtype=np.float32),
         np.array([
-            [2.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
-            [0.0, 0.0, 2.0],
-            [2, 2, 2]  # 並進ベクトル
+            [4.0, 4.0, 4.0],
+            [5.0, 5.0, 5.0],
+            [6.0, 6.0, 6.0],
+            [4.0, 5.0, 6.0]  # 並進ベクトル
         ], dtype=np.float32),
         np.array([
-            [3.0, 0.0, 0.0],
-            [0.0, 3.0, 0.0],
-            [0.0, 0.0, 3.0],
-            [3, 3, 3]  # 並進ベクトル
+            [7.0, 7.0, 7.0],
+            [8.0, 8.0, 8.0],
+            [9.0, 9.0, 9.0],
+            [7.0, 8.0, 9.0]  # 並進ベクトル
         ], dtype=np.float32)
     ]
 
@@ -104,4 +104,4 @@ if __name__ == "__main__":
     ], dtype=np.float32)
 
     # --- 関数呼び出し ---
-    reconstruct_3d_point(camera_params_sample, dummy_2d_points, 100, 100)
+    reconstruct_3d_points(camera_params_sample, dummy_2d_points, 100, 100)
