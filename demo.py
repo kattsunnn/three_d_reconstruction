@@ -2,12 +2,10 @@ import sys
 import json
 from pathlib import Path
 import numpy as np
-from reconstruct_3d_from_omni_directional_img import reconstruct_3d_points
+from three_d_reconstruction import reconstruct_3d_points_from_omni_directional_img 
 
-# corr_points_json_path = sys.argv[1]
-# camera_params_dir_path = sys.argv[2]
-corr_points_json_path = "../input/reconstruction/corr_points.json" 
-camera_params_dir_path = "../input/reconstruction/camera_params" 
+corr_points_json_path = sys.argv[1]
+camera_params_dir_path = sys.argv[2]
 src_w = 3840
 src_h = 1920 
 
@@ -24,5 +22,8 @@ for camera_param_path in list(camera_param_paths.iterdir()):
     extrinsic = camera_param[:4]
     extrinsics.append(extrinsic)
 
-x_array = reconstruct_3d_points(extrinsics, corr_points_array, src_w, src_h )
+x_array = reconstruct_3d_points_from_omni_directional_img(extrinsics, corr_points_array, src_w, src_h )
 print(x_array)
+
+# サンプル実行例
+# python .\demo.py .\sample\corr_points.json .\sample\camera_params\

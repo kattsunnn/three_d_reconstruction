@@ -27,7 +27,7 @@ def normalize_vec(vec):
     normalized_vec = vec / norm
     return normalized_vec
 
-def reconstruct_3d_points(extrinsics, corr_points_array, src_w, src_h):
+def reconstruct_3d_points_from_omni_directional_img(extrinsics, corr_points_array, src_w, src_h):
 
     R_list = []
     t_list = [] 
@@ -75,35 +75,3 @@ def reconstruct_3d_points(extrinsics, corr_points_array, src_w, src_h):
     x_array = np.array(x_list)
 
     return x_array
-
-if __name__ == "__main__":
-    camera_params_sample = [ 
-        np.array([
-            [1.0, 1.0, 1.0],
-            [2.0, 2.0, 2.0],
-            [3.0, 3.0, 3.0],
-            [1, 2, 3]  # 並進ベクトル
-        ], dtype=np.float32),
-        np.array([
-            [4.0, 4.0, 4.0],
-            [5.0, 5.0, 5.0],
-            [6.0, 6.0, 6.0],
-            [4.0, 5.0, 6.0]  # 並進ベクトル
-        ], dtype=np.float32),
-        np.array([
-            [7.0, 7.0, 7.0],
-            [8.0, 8.0, 8.0],
-            [9.0, 9.0, 9.0],
-            [7.0, 8.0, 9.0]  # 並進ベクトル
-        ], dtype=np.float32)
-    ]
-
-    # --- ダミーの2D対応点（今回は使用しないので適当） ---
-    dummy_2d_points = np.array([
-        [[0.0, 0.0],[1.0, 0.0],[0.0, 1.0],[1.0, 1.0]],
-        [[0.0, 0.0],[2.0, 0.0],[0.0, 2.0],[2.0, 2.0]],
-        [[0.0, 0.0],[3.0, 0.0],[0.0, 3.0],[3.0, 3.0]],
-    ], dtype=np.float32)
-
-    # --- 関数呼び出し ---
-    reconstruct_3d_points(camera_params_sample, dummy_2d_points, 100, 100)

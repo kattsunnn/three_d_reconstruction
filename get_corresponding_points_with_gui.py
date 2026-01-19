@@ -2,7 +2,6 @@ import sys
 import json
 from img_utils.img_utils import load_imgs, get_img_points_with_gui
 
-
 img_path = sys.argv[1]
 window_scale = float(sys.argv[2])
 output_file_path = sys.argv[3]
