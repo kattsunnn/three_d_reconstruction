@@ -14,6 +14,7 @@ src_h = 1920
 # 対応点の取得
 with open(corr_points_json_path, 'r', encoding='utf-8') as f:
     corr_points_array =  np.array(json.load(f))
+# print(corr_points_array.shape)
 
 # カメラパラメータの取得
 camera_param_paths = Path(camera_params_dir_path) 

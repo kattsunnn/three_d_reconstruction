@@ -5,7 +5,7 @@ def extrinsic_to_R_t(extrinsic):
     if extrinsic.shape != (4, 3):
         raise ValueError("camera_param must be of shape (4, 3)") 
    
-    R = extrinsic[:3, :].T
+    R = extrinsic[:3, :]
     t = extrinsic[3, :]
 
     return R, t
@@ -17,8 +17,10 @@ def uv_to_unit_sphere(u, v, src_w, src_h):
     return X, Y, Z 
 
 def xc_to_xw(xc, R, t):
-    xw = R.T @ xc - R.T @ t
-    return xw
+    return R.T @ ( xc - t )
+
+def xw_to_xc(xw, R, t):
+    return R @ xw + t
 
 def normalize_vec(vec):
     norm = np.linalg.norm(vec)
