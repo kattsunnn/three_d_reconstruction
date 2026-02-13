@@ -1,5 +1,5 @@
 import numpy as np
-import submodule.omni_directional_img_utils as omni
+import ..submodule.omni_directional_img_utils as omni
 
 def extrinsic_to_R_t(extrinsic):
     if extrinsic.shape != (4, 3):
