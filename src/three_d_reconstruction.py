@@ -1,5 +1,5 @@
 import numpy as np
-from omni_directional_img_utils.e2p import E2P
+import submodule.omni_directional_img_utils as omni
 
 def extrinsic_to_R_t(extrinsic):
     if extrinsic.shape != (4, 3):
@@ -11,7 +11,7 @@ def extrinsic_to_R_t(extrinsic):
     return R, t
 
 def uv_to_unit_sphere(u, v, src_w, src_h):
-    e2p = E2P(src_w, src_h)
+    e2p = omni.E2P(src_w, src_h)
     angle_u_deg, angle_v_deg = e2p.uv_to_angle(u, v)
     X, Y, Z = e2p.angle_to_unit_sphere(angle_u_deg, angle_v_deg)
     return X, Y, Z 
