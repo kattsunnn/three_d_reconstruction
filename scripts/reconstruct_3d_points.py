@@ -1,8 +1,10 @@
 import sys
 import json
 from pathlib import Path
+
 import numpy as np
-from three_d_reconstruction import reconstruct_3d_points_from_omni_directional_img 
+
+from three_d_reconstruction import reconstruct_3d_points_from_omni_directional_img
 
 corr_points_json_path = sys.argv[1]
 camera_params_dir_path = sys.argv[2]

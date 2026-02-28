@@ -1,6 +1,6 @@
 import sys
 import json
-import img_utils.img_utils as iu 
+import img_utils as iu 
 
 img_dir_path = sys.argv[1]
 window_scale = float(sys.argv[2])
