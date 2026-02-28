@@ -7,7 +7,7 @@ authors = [
     { name = "naoki", email = "katsudanaoki@gmail.com" }
 ]
 
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
  "numpy>=2.4.2",
  "omni-directional-img-utils",
