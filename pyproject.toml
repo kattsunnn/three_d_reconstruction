@@ -9,7 +9,7 @@ authors = [
 
 requires-python = ">=3.12"
 dependencies = [
- "numpy>=2.4.2",
+ "numpy",
  "omni-directional-img-utils",
 ]
 
